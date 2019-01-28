@@ -14,7 +14,12 @@ public class PlanetViewHolder extends RecyclerView.ViewHolder {
     public PlanetViewHolder(@NonNull final View itemView) {
         super(itemView);
 
-        nameTextView = itemView.findViewById(R.id.name_display_textview);
+        /*  The ViewHolder class is where you initialize the views in your itemview layout,
+            & you are referencing a TexView you have in the activity_display.xml
+            R.id.name_display_textview doesn't exist in your planet_list_itemview.xml
+        */
+
+        nameTextView = itemView.findViewById(R.id.planet_name_view);
     }
 
     public void onBind(final Planet planet){
