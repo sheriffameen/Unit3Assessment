@@ -53,8 +53,8 @@ public class RecyclerActivity extends AppCompatActivity {
         planetCall.enqueue(new Callback<PlanetList>() {
             @Override
             public void onResponse(Call<PlanetList> call, Response<PlanetList> response) {
-                List<Planet> planetList = response.body().getPlanet();
-                Log.d(TAG,"onCreate: "+ response.body());
+                List<Planet> planetList = response.body().getPlanets();
+                Log.e("listSize: ", planetList.size()+"");
                 planets_recycler_view = findViewById(R.id.planets_recyclerview);
                 planetAdapter = new PlanetAdapter(planetList);
                 planets_recycler_view.setAdapter(planetAdapter);

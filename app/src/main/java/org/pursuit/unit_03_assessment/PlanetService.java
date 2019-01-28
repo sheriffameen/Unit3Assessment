@@ -5,6 +5,7 @@ import retrofit2.http.GET;
 
 public interface PlanetService {
 
-    @GET("JDVila/storybook/master/planets")
+    //Missing the .json
+    @GET("JDVila/storybook/master/planets.json")
     Call<PlanetList> getPlanet();
 }

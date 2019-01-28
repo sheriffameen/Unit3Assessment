@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,9 +31,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        emailView = (EditText) findViewById(R.id.email_edittext);
-        passwordView = (EditText) findViewById(R.id.password_edittext);
-        usernameCheckbox = (CheckBox) findViewById(R.id.remember_username_checkbox);
+
+        //No need to cast the views
+        emailView = findViewById(R.id.email_edittext);
+        passwordView = findViewById(R.id.password_edittext);
+        usernameCheckbox = findViewById(R.id.remember_username_checkbox);
         sharedPreferences = getSharedPreferences(LOGIN_PREF_KEY,MODE_PRIVATE);
 
         passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -52,6 +55,12 @@ public class LoginActivity extends AppCompatActivity {
         * set the username EditText's value to the username value from shared preferences,
         * and set the checkbox's value to the checkbox value from shared preferences
         */
+
+        /* You had to check if there were any values saved in shared preferences
+           if there were some values, then you set that username value and checkbox's value
+           to the views, so that they are auto-populated when you run the app and the user doesn't
+           have to fill in the username. You're on the right track here.
+         */
         String emailViewString = emailView.getText().toString();
         boolean remember_username_checkbox = usernameCheckbox.isChecked();
 
@@ -60,8 +69,6 @@ public class LoginActivity extends AppCompatActivity {
             emailView.setText(sharedPreferences.getString("username",emailViewString));
             usernameCheckbox.setChecked(true);
         }
-
-
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -105,8 +112,15 @@ public class LoginActivity extends AppCompatActivity {
              * TODO: 4. the checkbox is NOT ticked - if it is not ticked, clear username in shared preferences
              * TODO: 5. if both email and password in EditTexts match strings.xml, move to RecyclerActivity
              */
-            if (email.equals(R.string.dummy_username) &&
-                    password.equals(R.string.dummy_password)){
+
+
+            /* R.string.dummy_username is the id of your string, not the actual string,
+            getResources().getString(R.string.dummy_username) is how you get the actual string value
+            */
+            String userNameValue = getResources().getString(R.string.dummy_username);
+            String passwordValue = getResources().getString(R.string.dummy_password);
+
+            if (email.equals(userNameValue) && password.equals(passwordValue)){
                 if (usernameCheckbox.isChecked()){
                     editor.putString("username", email);
                     editor.putBoolean("isChecked", usernameCheckbox.isChecked());
@@ -114,7 +128,11 @@ public class LoginActivity extends AppCompatActivity {
                 }else if (!usernameCheckbox.isChecked()){
                     editor.remove(email);
                 }
-                Intent intent = new Intent(LoginActivity.this,RecyclerView.class);
+
+                /*You had RecyclerView.class as your second parameter, but you don't have a class with
+                  that name.
+                */
+                Intent intent = new Intent(LoginActivity.this, RecyclerActivity.class);
                 startActivity(intent);
 
             }
